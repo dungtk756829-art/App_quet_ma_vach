@@ -31,7 +31,7 @@
 
 <main class="max-w-2xl mx-auto px-6 pt-6">
 
-    <!-- 1. Màn hình Trang chủ -->
+    <!-- 1. Trang chủ -->
     <div id="screen-1" class="screen">
         <div class="bg-white rounded-3xl p-6 mb-8">
             <div class="flex justify-between items-center">
@@ -43,54 +43,54 @@
             </div>
         </div>
 
-        <button onclick="switchScreen(2)" class="big-btn w-full bg-blue-600 text-white py-12 rounded-3xl text-2xl font-bold mb-4">📷 QUÉT MÃ HÀNG</button>
+        <button onclick="startScan()" class="big-btn w-full bg-blue-600 text-white py-12 rounded-3xl text-2xl font-bold mb-4">📷 QUÉT MÃ HÀNG</button>
         <button onclick="switchScreen(6)" class="big-btn w-full bg-white border-2 border-slate-200 py-8 rounded-3xl text-xl">📋 DANH SÁCH ĐƠN</button>
     </div>
 
-    <!-- 2. Quét mã (Camera) -->
+    <!-- 2. Camera Quét -->
     <div id="screen-2" class="screen hidden">
         <div class="bg-black rounded-3xl overflow-hidden relative h-[420px]">
             <video id="video" class="w-full h-full object-cover"></video>
             <div class="absolute inset-0 border-4 border-blue-500 border-dashed scan-frame"></div>
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 px-8 py-3 rounded-3xl text-center text-sm">
-                Đưa mã vạch vào khung
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 px-8 py-3 rounded-3xl text-center text-sm font-medium">
+                Đưa mã vạch vào khung camera
             </div>
         </div>
-        <button onclick="stopCamera()" class="mt-6 w-full py-6 bg-red-500 text-white rounded-3xl text-xl">Dừng Camera</button>
+        <button onclick="stopCameraAndBack()" class="mt-6 w-full py-6 bg-red-500 text-white rounded-3xl text-xl">Dừng Camera</button>
     </div>
 
-    <!-- 3. Quét thành công -->
+    <!-- 3. Thành công -->
     <div id="screen-3" class="screen hidden bg-white rounded-3xl p-8 text-center">
         <div class="text-8xl mb-6">✅</div>
         <h2 class="text-4xl font-bold text-emerald-600">THÀNH CÔNG</h2>
-        <div class="mt-8 text-left bg-slate-50 p-6 rounded-2xl">
+        <div class="mt-8 text-left bg-slate-50 p-6 rounded-2xl space-y-2">
             <p><strong>Mã hàng:</strong> SPX123456789</p>
             <p><strong>Tên hàng:</strong> Máy lọc không khí Xiaomi 4 Lite</p>
             <p><strong>Khách hàng:</strong> Nguyễn Văn An</p>
         </div>
-        <button onclick="switchScreen(5)" class="mt-10 w-full py-6 bg-blue-600 text-white rounded-3xl text-xl">Chi tiết đơn hàng</button>
+        <button onclick="switchScreen(5)" class="mt-10 w-full py-6 bg-blue-600 text-white rounded-3xl text-xl">Xem chi tiết</button>
     </div>
 
-    <!-- 4. Quét thất bại -->
+    <!-- 4. Thất bại -->
     <div id="screen-4" class="screen hidden bg-white rounded-3xl p-8 text-center">
         <div class="text-8xl mb-6">❌</div>
         <h2 class="text-4xl font-bold text-red-500">KHÔNG HỢP LỆ</h2>
-        <button onclick="switchScreen(2)" class="mt-10 w-full py-6 bg-blue-600 text-white rounded-3xl text-xl">🔄 Quét lại</button>
+        <button onclick="startScan()" class="mt-10 w-full py-6 bg-blue-600 text-white rounded-3xl text-xl">🔄 Quét lại</button>
     </div>
 
-    <!-- 5. Chi tiết đơn hàng -->
+    <!-- 5. Chi tiết -->
     <div id="screen-5" class="screen hidden bg-white rounded-3xl p-6">
-        <button onclick="switchScreen(6)" class="text-blue-600 mb-6">← Danh sách</button>
+        <button onclick="switchScreen(6)" class="text-blue-600 mb-6">← Quay lại</button>
         <div class="space-y-5 text-lg">
             <div><strong>Mã đơn:</strong> DH250603001</div>
             <div><strong>Mã hàng:</strong> SPX123456789</div>
             <div><strong>Khách hàng:</strong> Nguyễn Văn An</div>
-            <div><strong>Địa chỉ:</strong> 123 Đường Nguyễn Trãi, P. Bến Thành, Quận 1, TP.HCM</div>
+            <div><strong>Địa chỉ:</strong> 123 Nguyễn Trãi, P.Bến Thành, Quận 1</div>
         </div>
         <button onclick="markDelivered()" class="mt-12 w-full py-8 bg-emerald-600 text-white rounded-3xl text-2xl font-bold">✅ ĐÁNH DẤU ĐÃ GIAO</button>
     </div>
 
-    <!-- 6. Danh sách đơn -->
+    <!-- 6. Danh sách -->
     <div id="screen-6" class="screen hidden">
         <div class="bg-white rounded-3xl p-6">
             <div onclick="switchScreen(5)" class="p-5 bg-slate-50 rounded-2xl mb-4 cursor-pointer">DH250603001 - Nguyễn Văn An</div>
@@ -102,19 +102,18 @@
     <div id="screen-7" class="screen hidden bg-white rounded-3xl p-12 text-center">
         <div class="text-7xl mb-6">🛟</div>
         <h2 class="text-3xl font-bold">Hỗ trợ</h2>
-        <p class="text-2xl text-blue-600 mt-4">1900 1234</p>
+        <p class="text-blue-600 text-2xl mt-4">1900 1234</p>
     </div>
 
     <!-- 8. Menu -->
-    <div id="screen-8" class="screen hidden bg-white rounded-3xl">
-        <div onclick="switchScreen(1)" class="p-6 border-b">🏠 Trang chủ</div>
-        <div onclick="switchScreen(6)" class="p-6 border-b">📋 Danh sách đơn</div>
-        <div onclick="switchScreen(7)" class="p-6 border-b">🛟 Hỗ trợ</div>
+    <div id="screen-8" class="screen hidden bg-white rounded-3xl divide-y text-xl">
+        <div onclick="switchScreen(1)" class="p-6">🏠 Trang chủ</div>
+        <div onclick="switchScreen(6)" class="p-6">📋 Danh sách đơn</div>
+        <div onclick="switchScreen(7)" class="p-6">🛟 Hỗ trợ</div>
     </div>
 </main>
 
-<!-- Bottom Navigation -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t max-w-2xl mx-auto grid grid-cols-4 py-4 text-2xl">
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t max-w-2xl mx-auto grid grid-cols-4 py-4 text-3xl">
     <button onclick="switchScreen(1)" class="text-blue-600">🏠</button>
     <button onclick="switchScreen(6)" class="text-slate-400">📋</button>
     <button onclick="switchScreen(7)" class="text-slate-400">🛟</button>
@@ -122,11 +121,9 @@
 </nav>
 
 <script>
-// Camera
 let videoStream = null;
 
 async function startCamera() {
-    switchScreen(2);
     const video = document.getElementById('video');
     try {
         videoStream = await navigator.mediaDevices.getUserMedia({ 
@@ -135,12 +132,13 @@ async function startCamera() {
         video.srcObject = videoStream;
         video.play();
 
+        // Tự động quét thành công sau 3 giây
         setTimeout(() => {
             stopCamera();
-            switchScreen(3); // Thành công
-        }, 3000);
+            switchScreen(3);
+        }, 3200);
     } catch (err) {
-        alert("Không thể mở camera. Vui lòng cho phép quyền truy cập camera.");
+        alert("Không thể mở camera.\nVui lòng cho phép quyền Camera trong trình duyệt.");
         switchScreen(1);
     }
 }
@@ -148,26 +146,34 @@ async function startCamera() {
 function stopCamera() {
     if (videoStream) {
         videoStream.getTracks().forEach(track => track.stop());
+        videoStream = null;
     }
 }
 
-// Giọng nói AI
+function startScan() {
+    switchScreen(2);
+    setTimeout(() => {
+        startCamera();
+    }, 300);
+}
+
+function stopCameraAndBack() {
+    stopCamera();
+    switchScreen(1);
+}
+
 function startVoiceRecognition() {
     if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
-        alert("Vui lòng sử dụng Chrome để dùng tính năng giọng nói.");
+        alert("Vui lòng dùng Chrome để sử dụng giọng nói.");
         return;
     }
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'vi-VN';
     recognition.onresult = (event) => {
         const text = event.results[0][0].transcript.toLowerCase();
-        if (text.includes("quét") || text.includes("mã")) {
-            startCamera();
-        } else if (text.includes("danh sách") || text.includes("đơn")) {
-            switchScreen(6);
-        } else {
-            alert("Đã nghe: " + text);
-        }
+        if (text.includes("quét") || text.includes("mã")) startScan();
+        else if (text.includes("danh sách")) switchScreen(6);
+        else alert("Đã nghe: " + text);
     };
     recognition.start();
 }
@@ -178,7 +184,7 @@ function markDelivered() {
 }
 
 function switchScreen(n) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     document.getElementById(`screen-${n}`).classList.remove('hidden');
 }
 
