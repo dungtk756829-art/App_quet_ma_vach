@@ -3,117 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quét Hàng</title>
+    <title>Quét Mã Hàng</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { font-family: 'Roboto', system-ui, sans-serif; }
-        .card {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-        }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .btn-big { transition: all 0.3s; }
+        .btn-big:active { transform: scale(0.96); }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen pb-20">
+<body class="bg-gray-50 min-h-screen">
 
-    <!-- Header -->
-    <div class="bg-emerald-600 text-white pt-12 pb-6 px-6">
-        <div class="flex justify-between items-center">
-            <div>
-                <div class="text-sm opacity-75">Chào buổi sáng</div>
-                <div class="text-2xl font-semibold">Bác Nguyễn Văn A</div>
-            </div>
-            <div class="text-right">
-                <div class="text-2xl">📦</div>
-                <div class="text-xs opacity-75">Quét Hàng</div>
-            </div>
+<header class="bg-white py-6 border-b sticky top-0">
+    <div class="max-w-2xl mx-auto px-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="text-4xl">📦</div>
+            <div class="font-bold text-3xl">Quét Mã Hàng</div>
         </div>
+        <button onclick="startVoice()" class="text-blue-600">
+            <i class="fa-solid fa-microphone text-3xl"></i>
+        </button>
     </div>
+</header>
 
-    <div class="max-w-xl mx-auto px-6 -mt-6">
+<main class="max-w-2xl mx-auto px-6 pt-8">
 
-        <!-- Main Card -->
-        <div class="card text-white rounded-3xl p-8 mb-8">
+    <!-- 1. Home -->
+    <div id="s1" class="screen active">
+        <div class="bg-emerald-600 text-white rounded-3xl p-8 mb-8">
             <div class="flex justify-between">
                 <div>
-                    <div class="text-emerald-100 text-sm">Hôm nay</div>
-                    <div class="text-5xl font-bold mt-2">15 <span class="text-3xl opacity-70">/ 20</span></div>
-                    <div class="text-emerald-100 text-sm mt-1">đơn đã quét</div>
+                    <p class="opacity-75">Hôm nay</p>
+                    <p class="text-6xl font-bold">15/20</p>
                 </div>
-                <div class="text-6xl opacity-80">📦</div>
+                <div class="text-6xl">📦</div>
             </div>
         </div>
-
-        <!-- Quick Scan -->
-        <div onclick="startScan()" 
-             class="bg-white rounded-3xl p-8 shadow-xl mb-6 flex items-center justify-center gap-6 cursor-pointer hover:shadow-2xl transition">
-            <div class="text-6xl">📷</div>
-            <div>
-                <div class="text-2xl font-semibold text-slate-800">Quét mã hàng ngay</div>
-                <div class="text-emerald-600 text-sm">Sử dụng camera sau</div>
-            </div>
-        </div>
-
-        <!-- Services -->
-        <div class="grid grid-cols-2 gap-4">
-            <div onclick="showScreen(6)" class="bg-white rounded-3xl p-6 shadow cursor-pointer hover:-translate-y-1 transition">
-                <div class="text-4xl mb-4">📋</div>
-                <div class="font-semibold">Danh sách đơn</div>
-                <div class="text-sm text-slate-500">Xem tất cả đơn hàng</div>
-            </div>
-            
-            <div onclick="showScreen(7)" class="bg-white rounded-3xl p-6 shadow cursor-pointer hover:-translate-y-1 transition">
-                <div class="text-4xl mb-4">🛟</div>
-                <div class="font-semibold">Hỗ trợ</div>
-                <div class="text-sm text-slate-500">1900 1234</div>
-            </div>
-        </div>
+        <button onclick="startScan()" class="btn-big w-full bg-blue-600 text-white py-14 rounded-3xl text-2xl font-semibold mb-4">📷 Quét mã hàng</button>
+        <button onclick="showScreen(6)" class="btn-big w-full bg-white border py-8 rounded-3xl text-xl">📋 Danh sách đơn</button>
     </div>
 
-    <!-- Camera Screen -->
-    <div id="camera-screen" class="hidden fixed inset-0 bg-black z-50 flex flex-col">
-        <div class="flex-1 relative">
+    <!-- 2. Camera -->
+    <div id="s2" class="screen">
+        <div class="bg-black rounded-3xl h-[420px] relative overflow-hidden">
             <video id="video" class="w-full h-full object-cover"></video>
             <div class="absolute inset-0 border-4 border-white border-dashed m-8 rounded-3xl"></div>
-            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 text-white bg-black/60 px-8 py-3 rounded-2xl text-center">
-                Đưa mã vạch vào khung
-            </div>
         </div>
-        <button onclick="stopCamera()" class="m-6 py-6 bg-red-500 text-white rounded-3xl text-xl font-medium">Dừng Camera</button>
+        <button onclick="stopCamera()" class="mt-6 w-full py-6 bg-red-500 text-white rounded-3xl">Dừng Camera</button>
     </div>
 
-    <script>
-        let stream = null;
+    <!-- 3. Success -->
+    <div id="s3" class="screen bg-white rounded-3xl p-10 text-center">
+        <div class="text-8xl mb-4">✅</div>
+        <h2 class="text-4xl font-bold text-emerald-600">Thành công</h2>
+        <button onclick="showScreen(5)" class="mt-12 w-full py-8 bg-blue-600 text-white rounded-3xl text-xl">Xem chi tiết</button>
+    </div>
 
-        function startScan() {
-            document.getElementById('camera-screen').classList.remove('hidden');
-            const video = document.getElementById('video');
-            
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-                .then(s => {
-                    stream = s;
-                    video.srcObject = s;
-                    video.play();
-                    
-                    setTimeout(() => {
-                        stopCamera();
-                        alert("✅ Quét mã thành công!\nMã: SPX123456789");
-                    }, 2800);
-                })
-                .catch(() => {
-                    alert("Không mở được camera");
-                    document.getElementById('camera-screen').classList.add('hidden');
-                });
-        }
+    <!-- 5. Detail -->
+    <div id="s5" class="screen bg-white rounded-3xl p-8">
+        <button onclick="showScreen(6)" class="text-blue-600">← Quay lại</button>
+        <div class="mt-8 space-y-6">
+            <p><strong>Mã hàng:</strong> SPX123456789</p>
+            <p><strong>Khách:</strong> Nguyễn Văn An</p>
+        </div>
+        <button onclick="confirmDone()" class="mt-12 w-full py-8 bg-emerald-600 text-white rounded-3xl text-2xl">Đánh dấu đã giao</button>
+    </div>
 
-        function stopCamera() {
-            if (stream) stream.getTracks().forEach(t => t.stop());
-            document.getElementById('camera-screen').classList.add('hidden');
-        }
+    <!-- 6. List -->
+    <div id="s6" class="screen bg-white rounded-3xl p-8">
+        <div class="font-semibold mb-6">Danh sách đơn hàng</div>
+        <div onclick="showScreen(5)" class="p-5 bg-slate-50 rounded-2xl mb-3">DH250603001 - Nguyễn Văn An</div>
+    </div>
 
-        function showScreen(n) {
-            alert("Màn hình " + n + " (đang phát triển)");
-        }
-    </script>
+</main>
+
+<script>
+let stream = null;
+
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s' + id).classList.add('active');
+}
+
+async function startScan() {
+    showScreen(2);
+    const video = document.getElementById('video');
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        video.srcObject = stream;
+        video.play();
+
+        setTimeout(() => {
+            stopCamera();
+            showScreen(3);
+        }, 3000);
+    } catch(e) {
+        alert("Không mở được camera");
+        showScreen(1);
+    }
+}
+
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+    }
+}
+
+function startVoice() {
+    if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+        alert("Dùng Chrome để dùng giọng nói");
+        return;
+    }
+    const r = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    r.lang = 'vi-VN';
+    r.onresult = (e) => {
+        const txt = e.results[0][0].transcript.toLowerCase();
+        if (txt.includes("quét")) startScan();
+        if (txt.includes("danh sách")) showScreen(6);
+    };
+    r.start();
+}
+
+function confirmDone() {
+    alert("✅ Đã đánh dấu giao thành công!");
+    showScreen(1);
+}
+
+// Start
+showScreen(1);
+</script>
 </body>
 </html>
