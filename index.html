@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next-Gen Delivery System - Pro Smart App</title>
+    <title>Hệ Thống Giao Vận AI Thông Minh</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script>
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -29,14 +29,14 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .glass-card {
-            background: rgba(17, 24, 39, 0.8);
-            backdrop-filter: blur(16px);
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* CSS Camera Override to make it look clean */
-        #reader__video {
+        video {
+            width: 100% !important;
+            height: 100% !important;
             object-fit: cover !important;
-            border-radius: 24px !important;
         }
     </style>
 </head>
@@ -46,7 +46,7 @@
         <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
             Hệ Thống Giao Vận AI Thông Minh
         </h1>
-        <p class="text-slate-400 text-xs mt-1">Bản nâng cấp có Camera quét thật và Giọng nói trợ lý tiếng Việt.</p>
+        <p class="text-slate-400 text-xs mt-1">Bản nâng cấp kích hoạt phần cứng thực tế và trợ lý âm thanh điều hướng.</p>
     </div>
 
     <div class="mobile-screen">
@@ -65,42 +65,36 @@
             <div class="flex justify-between items-center mb-6">
                 <button onclick="switchScreen('menu')" class="p-2 bg-slate-800/80 rounded-xl border border-slate-700"><i data-lucide="menu" class="w-5 h-5 text-blue-400"></i></button>
                 <span class="font-extrabold text-sm tracking-widest text-slate-200">AI LOGISTICS</span>
-                <button onclick="speak('Xin chào Nguyễn Văn An, bạn còn 5 đơn hàng cần xử lý trong ngày.')" class="p-2 bg-slate-800/80 rounded-xl border border-slate-700 text-amber-400 animate-pulse">
+                <button onclick="speak('Xin chào Nguyễn Văn An, chúc bạn một ngày làm việc thuận lợi.')" class="p-2 bg-slate-800/80 rounded-xl border border-slate-700 text-amber-400">
                     <i data-lucide="volume-2" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 p-5 rounded-3xl mb-5 shadow-xl relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2.5">
                         <div class="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center font-bold text-white text-sm">AN</div>
                         <div>
                             <h4 class="font-bold text-xs text-white">Tài xế: Nguyễn Văn An</h4>
-                            <p class="text-[10px] text-blue-200 flex items-center gap-1"><i data-lucide="shield-check" class="w-3 h-3 text-emerald-300"></i> Đang trực tuyến (GPS Khớp)</p>
+                            <p class="text-[10px] text-blue-200 flex items-center gap-1"><i data-lucide="shield-check" class="w-3 h-3 text-emerald-300"></i> Đang trực tuyến</p>
                         </div>
                     </div>
-                    <span class="bg-emerald-500/30 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-400/30">Hạng 1 Kho</span>
                 </div>
-                
                 <div class="flex items-center justify-between bg-black/20 p-4 rounded-2xl">
                     <div>
-                        <p class="text-[10px] text-blue-100">Hiệu suất quét & giao hàng</p>
-                        <h2 class="text-xl font-black text-white mt-0.5">15 <span class="text-xs font-normal text-blue-200">/ 20 đơn hoàn thành</span></h2>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs font-bold text-emerald-400 bg-slate-900/50 px-2 py-1 rounded-lg">+4,500đ / đơn</span>
+                        <p class="text-[10px] text-blue-100">Tiến độ hôm nay</p>
+                        <h2 class="text-xl font-black text-white mt-0.5" id="progress-text">15 / 20 đơn</h2>
                     </div>
                 </div>
             </div>
 
             <div class="space-y-3.5">
-                <button onclick="startCameraScanner()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 p-4.5 rounded-2xl flex items-center justify-between shadow-lg active:scale-95 transition duration-150">
+                <button onclick="startCameraScanner()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 p-4.5 rounded-2xl flex items-center justify-between shadow-lg active:scale-95 transition">
                     <div class="flex items-center gap-3.5">
-                        <div class="p-3 bg-black/20 rounded-xl"><i data-lucide="scan-face" class="w-6 h-6 text-white animate-spin-slow"></i></div>
+                        <div class="p-3 bg-black/20 rounded-xl"><i data-lucide="scan" class="w-6 h-6 text-white"></i></div>
                         <div class="text-left">
-                            <h3 class="font-extrabold text-sm text-white tracking-wide">QUÉT MÃ CAMERA THẬT</h3>
-                            <p class="text-[11px] text-emerald-100/80 mt-0.5">Mở camera quét mã Barcode / QR tự động</p>
+                            <h3 class="font-extrabold text-sm text-white tracking-wide">QUÉT MÃ SẢN PHẨM</h3>
+                            <p class="text-[11px] text-emerald-100/80 mt-0.5">Kích hoạt Camera quét QR/Barcode thực tế</p>
                         </div>
                     </div>
                     <i data-lucide="arrow-right" class="w-5 h-5 text-white/80"></i>
@@ -110,19 +104,8 @@
                     <div class="flex items-center gap-3.5">
                         <div class="p-3 bg-blue-500/10 rounded-xl"><i data-lucide="navigation" class="w-6 h-6 text-blue-400"></i></div>
                         <div class="text-left">
-                            <h3 class="font-bold text-sm text-slate-200">TỐI ƯU LỘ TRÌNH ĐƠN (5)</h3>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Bản đồ số tự động sắp xếp tuyến đường đi ngắn</p>
-                        </div>
-                    </div>
-                    <span class="w-2.5 h-2.5 bg-blue-500 rounded-full animate-ping"></span>
-                </button>
-
-                <button onclick="switchScreen('support')" class="w-full bg-slate-800/90 border border-slate-700/60 p-4 rounded-2xl flex items-center justify-between hover:bg-slate-700/50 transition">
-                    <div class="flex items-center gap-3.5">
-                        <div class="p-3 bg-purple-500/10 rounded-xl"><i data-lucide="bot" class="w-6 h-6 text-purple-400"></i></div>
-                        <div class="text-left">
-                            <h3 class="font-bold text-sm text-slate-200">TRỢ LÝ GIỌNG NÓI AI</h3>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Xử lý sự cố rách nhãn, sai lệch phân kho</p>
+                            <h3 class="font-bold text-sm text-slate-200">DANH SÁCH ĐƠN HÀNG</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Quản lý lộ trình và vị trí giao nhận</p>
                         </div>
                     </div>
                     <i data-lucide="chevron-right" class="w-5 h-5 text-slate-500"></i>
@@ -133,12 +116,12 @@
         <div id="screen-scanner" class="screen-content flex-1 hidden flex-col relative bg-black p-5">
             <div class="flex justify-between items-center z-50 relative mb-4">
                 <button onclick="stopCameraScanner(); switchScreen('home')" class="p-2.5 bg-black/60 rounded-xl text-white backdrop-blur-md"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-                <span class="text-white text-xs font-bold bg-black/40 px-3 py-1.5 rounded-full tracking-widest">AI LIVE CAMERA</span>
+                <span class="text-white text-xs font-bold bg-black/40 px-3 py-1.5 rounded-full tracking-widest">AI SCANNER INTERFACE</span>
                 <div class="w-10"></div>
             </div>
 
-            <div class="w-full h-80 bg-slate-900 rounded-3xl relative overflow-hidden border-2 border-dashed border-emerald-500/50 flex items-center justify-center" id="camera-box">
-                <div id="reader" class="w-full h-full"></div>
+            <div class="w-full h-80 bg-slate-900 rounded-3xl relative overflow-hidden border-2 border-dashed border-emerald-500/50 flex items-center justify-center">
+                <video id="preview" class="w-full h-full object-cover"></video>
                 <div class="absolute inset-x-8 h-48 border-2 border-emerald-400 rounded-2xl pointer-events-none flex flex-col justify-between p-2 z-40">
                     <div class="flex justify-between"><div class="w-4 h-4 border-t-4 border-l-4 border-emerald-400"></div><div class="w-4 h-4 border-t-4 border-r-4 border-emerald-400"></div></div>
                     <div class="w-full h-0.5 bg-emerald-400/80 shadow-[0_0_8px_#10b981] animate-pulse"></div>
@@ -146,225 +129,230 @@
                 </div>
             </div>
 
-            <div class="mt-4 text-center">
-                <p class="text-xs text-slate-400">Đưa mã QR hoặc Barcode bất kỳ của kiện hàng vào khung hình trên để kiểm tra tự động</p>
-                <div class="mt-4 pt-4 border-t border-slate-800 flex gap-2">
-                    <button onclick="onScanSuccess('SPX-XIAOMI-4LITE')" class="flex-1 bg-slate-800 text-[10px] text-slate-300 p-2 rounded-lg border border-slate-700">Giả lập mã Đúng</button>
-                    <button onclick="onScanFailure('Lỗi kiểm tra hệ thống')" class="flex-1 bg-slate-800 text-[10px] text-slate-300 p-2 rounded-lg border border-slate-700">Giả lập mã Sai</button>
-                </div>
+            <div class="mt-4 pt-4 border-t border-slate-800 flex gap-2 z-50 relative">
+                <button onclick="simulateScan('SPX123456789')" class="flex-1 bg-slate-800 text-[11px] text-emerald-400 p-2.5 rounded-xl border border-slate-700 font-bold">Giả lập Mã Đúng</button>
+                <button onclick="simulateScan('INVALID-CODE')" class="flex-1 bg-slate-800 text-[11px] text-red-400 p-2.5 rounded-xl border border-slate-700 font-bold">Giả lập Mã Sai</button>
             </div>
         </div>
 
-        <div id="screen-success" class="screen-content flex-1 hidden flex-col relative bg-slate-950">
-            <div class="absolute bottom-0 inset-x-0 glass-card rounded-t-[36px] p-6 text-slate-100 flex flex-col z-50">
-                <div class="w-12 h-1 bg-slate-700 rounded-full mx-auto mb-4"></div>
+        <div id="screen-success" class="screen-content flex-1 hidden flex-col relative bg-slate-950 p-5 justify-end">
+            <div class="glass-card rounded-[32px] p-5 text-slate-100 flex flex-col w-full">
                 <div class="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 p-3.5 rounded-2xl mb-4">
-                    <div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
+                    <div class="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center text-white"><i data-lucide="check" class="w-4 h-4"></i></div>
                     <div>
-                        <h3 class="text-xs font-black text-emerald-400 tracking-wider">HÀNG ĐÃ KHỚP - HỢP LỆ</h3>
-                        <p class="text-[10px] text-slate-400 font-medium">Trợ lý AI đã phát thông tin bằng giọng nói</p>
+                        <h3 class="text-xs font-black text-emerald-400">QUÉT THÀNH CÔNG</h3>
+                        <p class="text-[10px] text-slate-400">Hệ thống đã khớp thông tin dữ liệu</p>
                     </div>
                 </div>
-
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 text-xs space-y-2.5 mb-5">
-                    <div class="flex justify-between"><span class="text-slate-400">Mã quét được:</span><span class="font-mono text-blue-400 font-bold" id="scanned-code">N/A</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Sản phẩm:</span><span class="font-medium text-slate-200">Máy lọc không khí Xiaomi 4 Lite</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Khách nhận:</span><span class="font-bold text-slate-200">Anh Nguyễn Tuấn Minh</span></div>
-                    <div class="flex flex-col gap-0.5 pt-1"><span class="text-slate-400">Địa điểm giao hàng:</span><span class="text-slate-300 leading-relaxed font-medium">Chung cư Vinhomes Central Park, Bình Thạnh, TP.HCM</span></div>
+                <div class="bg-slate-900/80 p-4 rounded-2xl text-xs space-y-2 mb-4">
+                    <div class="flex justify-between"><span class="text-slate-400">Mã hàng:</span><span class="font-mono text-blue-400 font-bold" id="code-display">N/A</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Tên hàng:</span><span class="text-slate-200">Máy lọc không khí Xiaomi 4 Lite</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Khách hàng:</span><span class="text-slate-200">Nguyễn Văn An</span></div>
                 </div>
-
-                <div class="flex flex-col gap-2">
-                    <button onclick="startCameraScanner()" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-3 rounded-xl text-xs tracking-wide flex items-center justify-center gap-2"><i data-lucide="scan" class="w-4 h-4"></i>TIẾP TỤC QUÉT ĐƠN TIẾP THEO</button>
-                    <button onclick="switchScreen('orders')" class="w-full bg-slate-800 border border-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-xs">Xem lộ trình bản đồ di chuyển</button>
-                </div>
+                <button onclick="startCameraScanner()" class="w-full bg-blue-600 font-bold py-3 rounded-xl text-xs tracking-wide">QUÉT TIẾP ĐƠN KHÁC</button>
             </div>
         </div>
 
-        <div id="screen-details" class="screen-content flex-1 hidden flex-col p-5 overflow-y-auto no-scrollbar pb-20">
-            <div class="flex justify-between items-center mb-4">
-                <button onclick="switchScreen('orders')" class="p-2 bg-slate-800 rounded-xl border border-slate-700"><i data-lucide="chevron-left" class="w-5 h-5 text-blue-400"></i></button>
-                <span class="font-bold text-xs tracking-widest text-slate-300">THỰC THI GIAO VẬN</span>
-                <div class="w-9"></div>
-            </div>
-
-            <div class="w-full h-32 bg-slate-900 rounded-2xl mb-4 relative overflow-hidden border border-slate-800">
-                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:12px_12px] bg-slate-950"></div>
-                <div class="absolute top-1/2 left-1/4 w-32 h-1 bg-gradient-to-r from-blue-500 to-emerald-400 transform rotate-6"></div>
-                <div class="absolute top-1/3 left-1/2 flex flex-col items-center animate-bounce">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-red-500 fill-red-500/30"></i>
+        <div id="screen-failed" class="screen-content flex-1 hidden flex-col relative bg-slate-950 p-5 justify-end">
+            <div class="glass-card rounded-[32px] p-5 text-slate-100 flex flex-col w-full">
+                <div class="flex items-center gap-3 bg-red-500/10 border border-red-500/20 p-3.5 rounded-2xl mb-4">
+                    <div class="w-8 h-8 bg-red-500 rounded-xl flex items-center justify-center text-white"><i data-lucide="x" class="w-4 h-4"></i></div>
+                    <div>
+                        <h3 class="text-xs font-black text-red-400">MÃ KHÔNG HỢP LỆ</h3>
+                        <p class="text-[10px] text-slate-400">Vui lòng kiểm tra lại nhãn dán</p>
+                    </div>
                 </div>
+                <button onclick="startCameraScanner()" class="w-full bg-slate-800 border border-slate-700 font-bold py-3 rounded-xl text-xs">QUÉT LẠI</button>
             </div>
-
-            <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 mb-4">
-                <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1.5"><i data-lucide="camera" class="w-4 h-4 text-blue-400"></i> HÌNH ẢNH MINH CHỨNG GIAO HÀNG (POD)</h4>
-                <div class="w-full h-24 bg-slate-900 rounded-xl border border-dashed border-slate-700 flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-800/60" id="pod-box" onclick="triggerPODCamera()">
-                    <i data-lucide="image-plus" class="w-5 h-5 text-slate-500"></i>
-                    <span class="text-[10px] text-slate-400">Bấm để chụp ảnh gói hàng tại nhà khách</span>
-                </div>
-            </div>
-
-            <button onclick="onDeliveryDone()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 font-bold py-3.5 rounded-xl text-xs text-white shadow-md flex items-center justify-center gap-2">
-                <i data-lucide="check-square" class="w-4 h-4"></i> XÁC NHẬN HOÀN THÀNH ĐƠN
-            </button>
         </div>
 
         <div id="screen-orders" class="screen-content flex-1 hidden flex-col p-5 overflow-y-auto no-scrollbar pb-20">
             <div class="flex justify-between items-center mb-4">
                 <button onclick="switchScreen('home')" class="p-2 bg-slate-800 rounded-xl border border-slate-700"><i data-lucide="chevron-left" class="w-5 h-5 text-blue-400"></i></button>
-                <span class="font-bold text-xs tracking-wider">LỘ TRÌNH ĐƯỜNG ĐI</span>
+                <span class="font-bold text-xs tracking-wider">DANH SÁCH ĐƠN</span>
                 <div class="w-9"></div>
             </div>
-
-            <div class="bg-blue-600/10 border border-blue-500/20 p-3 rounded-xl text-[11px] text-blue-400 mb-4 flex items-center gap-2">
-                <i data-lucide="info" class="w-4 h-4 shrink-0"></i>
-                <span>Thuật toán đã tối ưu: Đi theo thứ tự từ trên xuống dưới để tiết kiệm 3.4km xăng.</span>
-            </div>
-
-            <div class="space-y-2.5">
-                <div onclick="switchScreen('details')" class="bg-slate-800/80 border-l-4 border-blue-500 p-3.5 rounded-r-xl flex justify-between items-center cursor-pointer hover:bg-slate-700/40">
-                    <div>
-                        <h4 class="text-xs font-bold text-slate-200">Đơn 1: Nguyễn Tuấn Minh</h4>
-                        <p class="text-[10px] text-slate-400 mt-0.5">Vinhomes Central Park • Cách 1.2km</p>
-                    </div>
-                    <i data-lucide="navigation-2" class="w-4 h-4 text-blue-400"></i>
+            <div class="space-y-2.5" id="order-list-container">
                 </div>
-                <div onclick="switchScreen('details')" class="bg-slate-800/80 border-l-4 border-slate-600 p-3.5 rounded-r-xl flex justify-between items-center opacity-70">
-                    <div>
-                        <h4 class="text-xs font-bold text-slate-400">Đơn 2: Vương Hoàng Long</h4>
-                        <p class="text-[10px] text-slate-500 mt-0.5">Võ Nguyên Giáp, Quận 2 • Cách 2.8km</p>
-                    </div>
-                    <i data-lucide="lock" class="w-4 h-4 text-slate-600"></i>
+        </div>
+
+        <div id="screen-details" class="screen-content flex-1 hidden flex-col p-5 overflow-y-auto no-scrollbar pb-20">
+            <div class="flex justify-between items-center mb-4">
+                <button onclick="switchScreen('orders')" class="p-2 bg-slate-800 rounded-xl border border-slate-700"><i data-lucide="chevron-left" class="w-5 h-5 text-blue-400"></i></button>
+                <span class="font-bold text-xs tracking-wider">CHI TIẾT ĐƠN HÀNG</span>
+                <div class="w-9"></div>
+            </div>
+            <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs space-y-3 mb-4">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Mã đơn hàng:</span><span class="font-bold text-slate-200" id="det-id">N/A</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Khách hàng:</span><span class="font-bold text-slate-200" id="det-name">N/A</span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <span class="text-slate-400">Địa chỉ giao:</span><span class="text-slate-300" id="det-addr">N/A</span>
                 </div>
             </div>
+            <button onclick="confirmDelivery()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 font-bold py-3.5 rounded-xl text-xs">ĐÁNH DẤU ĐA GIAO</button>
         </div>
 
         <div id="screen-support" class="screen-content flex-1 hidden flex-col p-5 justify-center items-center text-center">
-            <div class="w-20 h-20 bg-gradient-to-tr from-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-2xl mb-4 relative animate-pulse">
-                <i data-lucide="mic" class="w-8 h-8 text-white"></i>
-            </div>
-            <h3 class="text-sm font-bold text-slate-200">Trợ Lý Giọng Nói Sẵn Sàng</h3>
-            <p class="text-xs text-slate-400 px-6 mt-1 mb-6">Bấm vào nút dưới đây để kích hoạt kiểm tra hệ thống âm thanh phản hồi thông minh.</p>
-            <button onclick="speak('Hệ thống âm thanh tiếng Việt hoạt động hoàn hảo. Chúc bạn một ngày giao hàng thuận lợi!')" class="bg-purple-600 hover:bg-purple-500 px-4 py-2.5 rounded-xl text-xs font-bold transition">Kiểm tra Giọng Nói Trợ Lý</button>
-            <button onclick="switchScreen('home')" class="text-xs text-slate-500 mt-4 underline">Quay lại trang chủ</button>
+            <div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="headset" class="w-8 h-8"></i></div>
+            <h3 class="text-sm font-bold">Trung Tâm Trợ Giúp</h3>
+            <p class="text-xs text-slate-400 mt-1 mb-4">Tổng đài hỗ trợ vận hành khẩn cấp hoạt động 24/7</p>
+            <a href="tel:19001234" class="bg-blue-600 px-4 py-2.5 rounded-xl text-xs font-bold">GỌI HOTLINE 1900 1234</a>
         </div>
 
         <div id="screen-menu" class="screen-content flex-1 hidden flex-col bg-slate-900 p-5">
             <div class="flex justify-end mb-4"><button onclick="switchScreen('home')" class="p-2 bg-slate-800 rounded-xl text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button></div>
-            <div class="flex items-center gap-3 pb-4 border-b border-slate-800 mb-4">
-                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-sm">AN</div>
-                <div><h4 class="font-bold text-xs text-slate-200">Nguyễn Văn An</h4><p class="text-[10px] text-slate-400">ID: #DRV-89421</p></div>
-            </div>
             <div class="space-y-1 text-xs">
-                <button onclick="switchScreen('home')" class="w-full flex items-center gap-3 px-4 py-3 text-blue-400 bg-blue-500/10 rounded-xl text-left"><i data-lucide="home" class="w-4 h-4"></i> Trang chủ ứng dụng</button>
-                <button onclick="switchScreen('orders')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 text-left"><i data-lucide="calendar" class="w-4 h-4"></i> Lịch sử quét thực tế</button>
+                <button onclick="switchScreen('home')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 rounded-xl text-left"><i data-lucide="home" class="w-4 h-4"></i> Trang chủ</button>
+                <button onclick="switchScreen('orders')" class="w-full flex items-center gap-3 px-4 py-3 text-slate-300 rounded-xl text-left"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Danh sách đơn</button>
             </div>
         </div>
 
-        <div class="absolute bottom-0 inset-x-0 h-16 bg-slate-900/95 backdrop-blur-md border-t border-slate-800/80 flex justify-around items-center z-40 px-2 select-none">
-            <button onclick="switchScreen('home')" class="flex flex-col items-center gap-0.5 text-blue-400" id="tab-home"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[9px] font-medium">Tổng quan</span></button>
-            <button onclick="startCameraScanner()" class="flex flex-col items-center gap-0.5 text-slate-400" id="tab-scanner"><i data-lucide="scan" class="w-5 h-5"></i><span class="text-[9px] font-medium">Quét máy</span></button>
-            <button onclick="switchScreen('orders')" class="flex flex-col items-center gap-0.5 text-slate-400" id="tab-orders"><i data-lucide="map" class="w-5 h-5"></i><span class="text-[9px] font-medium">Lộ trình</span></button>
-            <button onclick="switchScreen('support')" class="flex flex-col items-center gap-0.5 text-slate-400" id="tab-support"><i data-lucide="mic" class="w-5 h-5"></i><span class="text-[9px] font-medium">Trợ lý</span></button>
+        <div class="absolute bottom-0 inset-x-0 h-16 bg-slate-900/95 border-t border-slate-800 flex justify-around items-center z-40 px-2 select-none">
+            <button onclick="switchScreen('home')" class="flex flex-col items-center gap-0.5 text-blue-400" id="tab-home"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[9px]">Tổng quan</span></button>
+            <button onclick="startCameraScanner()" class="flex flex-col items-center gap-0.5 text-slate-400" id="tab-scanner"><i data-lucide="scan" class="w-5 h-5"></i><span class="text-[9px]">Quét mã</span></button>
+            <button onclick="switchScreen('orders')" class="flex flex-col items-center gap-0.5 text-slate-400" id="tab-orders"><i data-lucide="clipboard-list" class="w-5 h-5"></i><span class="text-[9px]">Đơn hàng</span></button>
+            <button onclick="switchScreen('support')" class="flex flex-col items-center gap-0.5 text-slate-400" id="tab-support"><i data-lucide="headset" class="w-5 h-5"></i><span class="text-[9px]">Hỗ trợ</span></button>
         </div>
 
         <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-28 h-1 bg-slate-700 rounded-full z-50"></div>
     </div>
 
     <script>
-        let html5QrcodeScanner = null;
-
-        // Initialize Lucide Vectors Icons
         lucide.createIcons();
+        let scannerEngine = null;
+        let selectedOrderIndex = null;
 
-        // Screen Navigator Switch Utility
+        // Data Storage Model (Đồng bộ danh sách hình ảnh góc dưới cùng)
+        let ordersData = [
+            { id: "DH250603001", code: "SPX123456789", name: "Nguyễn Văn An", addr: "123 Đường Nguyễn Trãi, P. Bến Thành, Quận 1, TP.HCM", status: "Đã giao", time: "09:15" },
+            { id: "DH250603002", code: "SPX987654321", name: "Trần Thị Bình", addr: "456 CMT8, Quận 3, TP.HCM", status: "Đã giao", time: "09:45" },
+            { id: "DH250603003", code: "SPX112233445", name: "Lê Minh Cường", addr: "789 Điện Biên Phủ, Bình Thạnh, TP.HCM", status: "Chưa giao", time: "10:10" },
+            { id: "DH250603004", code: "SPX556677889", name: "Phạm Quốc Duy", addr: "12 Lạc Long Quân, Quận 11, TP.HCM", status: "Chưa giao", time: "10:30" }
+        ];
+
+        function renderOrders() {
+            const container = document.getElementById('order-list-container');
+            container.innerHTML = '';
+            let completed = ordersData.filter(o => o.status === "Đã giao").length;
+            document.getElementById('progress-text').innerText = `${completed} / ${ordersData.length} đơn`;
+
+            ordersData.forEach((order, index) => {
+                let isDone = order.status === "Đã giao";
+                container.innerHTML += `
+                    <div onclick="openOrderDetails(${index})" class="bg-slate-800/80 border ${isDone ? 'border-slate-700/60' : 'border-blue-500/40'} p-3.5 rounded-2xl flex justify-between items-center cursor-pointer hover:bg-slate-700/40">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 ${isDone ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'} rounded-xl flex items-center justify-center">
+                                <i data-lucide="${isDone ? 'check-circle' : 'clock'}" class="w-4 h-4"></i>
+                            </div>
+                            <div class="text-xs">
+                                <h4 class="font-bold text-slate-200">${order.id}</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Khách: ${order.name}</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-mono text-slate-500">${order.time}</span>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
         function switchScreen(screenId) {
-            document.querySelectorAll('.screen-content').forEach(screen => screen.classList.add('hidden'));
+            stopCameraScanner();
+            document.querySelectorAll('.screen-content').forEach(s => s.classList.add('hidden'));
             const target = document.getElementById('screen-' + screenId);
             if(target) target.classList.remove('hidden');
 
-            // Reset active tabs menu highlights
-            document.querySelectorAll('[id^="tab-"]').forEach(tab => tab.classList.replace('text-blue-400', 'text-slate-400'));
+            document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.replace('text-blue-400', 'text-slate-400'));
             const currentTab = document.getElementById('tab-' + screenId);
             if (currentTab) currentTab.classList.replace('text-slate-400', 'text-blue-400');
         }
 
-        // TEXT TO SPEECH NATIVE SPEECH ENGINE (VIETNAMESE AI VOICE)
-        function speak(textMessage) {
+        // TEXT-TO-SPEECH NATIVE CORE ENGINE
+        function speak(text) {
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Stop any ongoing sound
-                let utterance = new SpeechSynthesisUtterance(textMessage);
-                utterance.lang = 'vi-VN';
-                utterance.pitch = 1.0;
-                utterance.rate = 1.0;
-                window.speechSynthesis.speak(utterance);
+                window.speechSynthesis.cancel();
+                let msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'vi-VN';
+                window.speechSynthesis.speak(msg);
             }
         }
 
-        // REAL CAMERA SCANNING PROCESSING ENGINE
+        // REAL WEB-API HARDWARE CAMERA INTERFACE
         function startCameraScanner() {
             switchScreen('scanner');
-            
-            if (!html5QrcodeScanner) {
-                html5QrcodeScanner = new Html5Qrcode("reader");
+            if (!scannerEngine) {
+                scannerEngine = new Instascan.Scanner({ video: document.getElementById('preview'), mirror: false });
+                scannerEngine.addListener('scan', function (content) {
+                    processDecodedCode(content);
+                });
             }
-            
-            const config = { fps: 15, qrbox: { width: 230, height: 200 } };
-            
-            html5QrcodeScanner.start(
-                { facingMode: "environment" }, 
-                config,
-                (decodedText) => {
-                    // Success callback
-                    stopCameraScanner();
-                    onScanSuccess(decodedText);
-                },
-                (errorMessage) => {
-                    // Keep scanning silenty
+
+            Instascan.Camera.getCameras().then(function (cameras) {
+                if (cameras.length > 0) {
+                    // Ưu tiên camera sau của thiết bị di động
+                    let backCam = cameras.find(c => c.name.toLowerCase().includes('back')) || cameras[0];
+                    scannerEngine.start(backCam).then(() => {
+                        speak("Hệ thống camera đã được kích hoạt.");
+                    }).catch(e => {
+                        console.error(e);
+                        speak("Lỗi quyền truy cập camera.");
+                    });
+                } else {
+                    speak("Không tìm thấy camera trên thiết bị.");
                 }
-            ).catch(err => {
-                console.error("Camera access failed: ", err);
-                speak("Không thể truy cập camera hệ thống.");
+            }).catch(function (e) {
+                console.error(e);
             });
         }
 
         function stopCameraScanner() {
-            if (html5QrcodeScanner && html5QrcodeScanner.isScanning) {
-                html5QrcodeScanner.stop().then(() => {
-                    console.log("Camera stopped cleanly.");
-                }).catch(err => console.error("Error stopping camera: ", err));
+            if (scannerEngine) {
+                scannerEngine.stop();
             }
         }
 
-        // Scan Event Callback Triggers
-        function onScanSuccess(dataCode) {
-            document.getElementById('scanned-code').innerText = dataCode;
-            switchScreen('success');
-            // AI voice prompt feedback confirmation
-            speak("Quét thành công! Kiện hàng máy lọc không khí Xiaomi, khớp dữ liệu phân khu.");
+        function simulateScan(code) {
+            processDecodedCode(code);
         }
 
-        function onScanFailure(errorMsg) {
-            switchScreen('home');
-            speak("Lỗi hệ thống! Mã vạch hàng hóa không tồn tại hoặc sai thông tin.");
-            alert("⚠️ Không tìm thấy đơn hàng tương thích với mã này!");
+        function processDecodedCode(code) {
+            stopCameraScanner();
+            if (code === "SPX123456789") {
+                document.getElementById('code-display').innerText = code;
+                switchScreen('success');
+                speak("Quét thành công đơn hàng máy lọc không khí của Nguyễn Văn An.");
+            } else {
+                switchScreen('failed');
+                speak("Mã hàng không hợp lệ, vui lòng quét lại.");
+            }
         }
 
-        // Innovative Mock Feature: Photo POD Capture Proof
-        function triggerPODCamera() {
-            const podBox = document.getElementById('pod-box');
-            podBox.innerHTML = `
-                <div class="w-full h-full bg-cover bg-center rounded-xl relative" style="background-image: url('https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=300&q=80')">
-                    <span class="absolute bottom-1 right-1 bg-emerald-500 text-[8px] text-white px-1 rounded">✔ Đã chụp POD</span>
-                </div>
-            `;
-            speak("Đã lưu hình ảnh minh chứng giao hàng.");
+        function openOrderDetails(index) {
+            selectedOrderIndex = index;
+            let order = ordersData[index];
+            document.getElementById('det-id').innerText = order.id;
+            document.getElementById('det-name').innerText = order.name;
+            document.getElementById('det-addr').innerText = order.addr;
+            switchScreen('details');
         }
 
-        function onDeliveryDone() {
-            switchScreen('home');
-            speak("Chúc mừng bạn đã hoàn thành giao đơn hàng.");
-            alert("🎉 Đã cập nhật trạng thái giao thành công lên máy chủ GitHub!");
+        function confirmDelivery() {
+            if(selectedOrderIndex !== null) {
+                ordersData[selectedOrderIndex].status = "Đã giao";
+                renderOrders();
+                switchScreen('home');
+                speak("Đã xác nhận giao hàng thành công.");
+            }
         }
+
+        // Initial Load Runtime Execution
+        window.onload = function() {
+            renderOrders();
+        };
     </script>
 </body>
 </html>
